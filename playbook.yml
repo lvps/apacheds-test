@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: true
+  vars:
+    ApacheDS_version: "2.0.0-M24"
+
+  tasks:
+  - name: Update system
+    yum: name=* state=latest
+
+  - name: Install JVM
+    yum: name=java-1.8.0-openjdk state=installed
+
+  - name: Install ApacheDS
+    yum:
+      name: http://mirror.nohup.it/apache//directory/apacheds/dist/{{ ApacheDS_version }}/apacheds-{{ ApacheDS_version }}-x86_64.rpm
+      state: present
+
+  #- name: Open LDAP port to the world
+  #  firewalld: service=ldap zone=public permanent=true state=enabled immediate=yes
+
+  - name: Create ApacheDS service
+    template:
+      src: apacheds.service.j2
+      dest: /etc/systemd/system/apacheds@.service
+      owner: root
+      group: root
+      mode: 0664
+    notify: Systemctl daemon-reload
+
+  - name: Enable and start ApacheDS
+    service:
+      name: apacheds@default
+      enabled: yes
+      state: started
+
+  handlers:
+  - name: Systemctl daemon-reload
+    command: systemctl daemon-reload

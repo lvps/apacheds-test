@@ -1,0 +1,16 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=ApacheDS LDAP server - %i
+After=local-fs.target remote-fs.target network.target syslog.target
+
+[Service]
+Type=forking
+PrivateTmp=true
+PIDFile=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/run/apacheds-%i.pid
+ExecStart=/opt/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/bin/apacheds start %i
+ExecRestart=/opt/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/bin/apacheds restart %i
+ExecStop=/opt/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/bin/apacheds stop %i
+
+[Install]
+WantedBy=multi-user.target
