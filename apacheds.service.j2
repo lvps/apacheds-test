@@ -10,11 +10,9 @@ PrivateTmp=true
 
 # ------------------------------------------------------------------------------
 # Enable this once a recent enough version of systemd lands in CentOS
+# (pidfile won't be writable anymore, so you'll also need to find a workaround)
 #DynamicUser=yes
-#CacheDirectory=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/cache
-#ConfigurationDirectory=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/conf
-#LogsDirectory=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/logs
-#StateDirectory=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/partitions /var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/syncrepl-data
+#StateDirectory=apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i
 # ------------------------------------------------------------------------------
 
 PIDFile=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/run/apacheds-%i.pid
