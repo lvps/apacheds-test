@@ -7,6 +7,16 @@ After=local-fs.target remote-fs.target network.target syslog.target
 [Service]
 Type=forking
 PrivateTmp=true
+
+# ------------------------------------------------------------------------------
+# Enable this once a recent enough version of systemd lands in CentOS
+#DynamicUser=yes
+#CacheDirectory=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/cache
+#ConfigurationDirectory=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/conf
+#LogsDirectory=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/logs
+#StateDirectory=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/partitions /var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/syncrepl-data
+# ------------------------------------------------------------------------------
+
 PIDFile=/var/lib/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/%i/run/apacheds-%i.pid
 ExecStart=/opt/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/bin/apacheds start %i
 ExecRestart=/opt/apacheds-{{ ApacheDS_version | regex_replace('-', '_') }}/bin/apacheds restart %i
